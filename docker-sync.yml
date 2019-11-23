@@ -1,0 +1,21 @@
+version: '2'
+
+options:
+  compose-file-path: 'docker-compose.yml'
+
+syncs:
+  api_sync:
+    notify_terminal: true
+    src: 'api'
+    watch_excludes: [
+        '.*/.git',
+        '.*/node_modules',
+        '.*/bower_components',
+        '.*/sass-cache',
+        '.*/.sass-cache',
+        '.*/.sass-cache',
+        '.coffee',
+        '.scss',
+        '.sass',
+        '.gitignore'
+    ]

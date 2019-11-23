@@ -1,0 +1,13 @@
+{
+    "name": "kadegray/subscribersfields",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Kade Gray",
+            "email": "kadegray@gmail.com"
+        }
+    ],
+    "require": {
+        "laravel/helpers": "^1.1"
+    }
+}

@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+# Set environment variables for dev
+
+if [ -f ./xdebug-host.sh ]; then
+    source ./xdebug-host.sh
+# elif [ "$(uname)" == "Darwin" ]; then
+#     export XDEBUG_HOST=$(ipconfig getifaddr en0)
+# elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+#     ips=($(hostname -I))
+#     export XDEBUG_HOST=${ips[0]}
+# elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+#     # Do something under 32 bits Windows NT platform
+# elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+#     # Do something under 64 bits Windows NT platform
+fi
+
+if [ $# -gt 0 ]; then
+    if [ "$1" != "start" ] && [ "$1" != "clean" ]; then
+        docker-compose "$@"
+    else
+        docker-sync-stack "$@"
+    fi
+else
+    docker-sync-stack start
+fi

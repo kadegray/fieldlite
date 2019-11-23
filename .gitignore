@@ -1,0 +1,9 @@
+/templates
+/docs
+.DS_Store
+.project
+.env
+vendor
+node_modules
+
+php-xdebug.ini
