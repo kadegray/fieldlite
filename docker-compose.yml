@@ -13,8 +13,11 @@ services:
     links:
       - database
     environment:
-      - DB_PORT=3306
       - DB_HOST=database
+      - DB_USERNAME=root
+      - DB_PASSWORD=root
+      - DB_NAME=subscribersfields
+      - DB_PORT=3306
 
   database:
     image: mysql:5.7

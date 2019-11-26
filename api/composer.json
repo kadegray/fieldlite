@@ -7,6 +7,12 @@
             "email": "kadegray@gmail.com"
         }
     ],
+    "autoload": {
+        "psr-4": {
+            "Framework\\": "Framework/",
+            "App\\": "app/"
+        }
+    },
     "require": {
         "laravel/helpers": "^1.1"
     }

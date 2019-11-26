@@ -1,32 +1,56 @@
 <?php
 
-namespace Framework\Controllers;
+namespace App\Controllers;
 
+use App\Models\Subscriber;
 use Framework\Controller;
-use Subscriber;
+use Framework\Model;
+use Framework\Request;
+use Framework\Response;
 
 class SubscribersController extends Controller {
 
-    public function index($id)
+    public function index(Request $request)
     {
-        Subscriber::find($id);
+        $subscribers = Subscriber::all();
+
+        new Response($subscribers);
     }
 
-    public function create($request)
+    public function show(Request $request, Model $subscriber)
     {
-        $subscriber = new Subscriber();
-        $subscriber->fill($request);
+        if (!$subscriber) {
+            return;
+        }
+
+        new Response($subscriber);
+    }
+
+    public function create(Request $request)
+    {
+        $requestData = $request->data();
+        $subscriber = new Subscriber($requestData);
         $subscriber->save();
+
+        new Response($subscriber);
     }
 
-    public function update($request)
+    public function update(Request $request, Model $subscriber)
     {
+        if (!$subscriber) {
+            return;
+        }
 
+        $requestData = $request->data();
+        $subscriber->fill($requestData);
+        $subscriber->save();
+
+        new Response($subscriber);
     }
 
-    public function delete($id)
+    public function delete(Request $request, Model $subscriber)
     {
-
+        new Response($subscriber->delete(), 200);
     }
 
 }

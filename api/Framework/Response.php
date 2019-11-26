@@ -1,5 +1,7 @@
 <?php
 
+namespace Framework;
+
 class Response {
 
     protected $contentType = 'application/json';
