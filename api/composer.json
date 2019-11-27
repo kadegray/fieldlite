@@ -14,6 +14,7 @@
         }
     },
     "require": {
-        "laravel/helpers": "^1.1"
+        "laravel/helpers": "^1.1",
+        "rakit/validation": "^1.2"
     }
 }

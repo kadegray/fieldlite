@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\Field;
+use App\Requests\FieldRequest as Request;
 use Framework\Controller;
 use Framework\Model;
-use Framework\Request;
 use Framework\Response;
 
 class FieldsController extends Controller {

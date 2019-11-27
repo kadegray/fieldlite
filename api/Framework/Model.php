@@ -195,10 +195,11 @@ class Model implements JsonSerializable
         $query = "SELECT * FROM $modelInstance->tableName WHERE id = $id;";
 
         $found = Database::query($query);
-        if (!$found) {
+        if (!count($found)) {
             return;
         }
 
+        $found = array_first($found);
         $modelInstance->fillAll($found);
 
         return $modelInstance;
@@ -229,6 +230,19 @@ class Model implements JsonSerializable
             if ($modelsPlural === $plural) {
                 return $modelClassName;
             }
+        }
+    }
+
+    public static function getModelClassByModelName($modelName)
+    {
+        $singular = self::getModelClassWithSingularName($modelName);
+        if ($singular) {
+            return $singular;
+        }
+
+        $plural = self::getModelClassWithPlural($modelName);
+        if ($plural) {
+            return $plural;
         }
     }
 

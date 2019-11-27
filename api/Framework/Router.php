@@ -3,7 +3,6 @@
 namespace Framework;
 
 use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 
 class Router
 {
@@ -64,8 +63,9 @@ class Router
             return;
         }
 
+        $requestClass = Request::getRequestClassByModel($resourceName);
         $responseData = $controller->$controllerMethod(
-            self::$request,
+            (new $requestClass),
             ...self::$request->modelsBasedOnRestUri
         );
 
@@ -77,9 +77,6 @@ class Router
         if (self::$request->method !== 'get') {
             return;
         }
-
-        // $modelClass = Model::getModelClassWithPlural($firstSegment);
-        // $modelName = (new $modelClass)->singular;
 
         $foundRoute = Arr::where(self::$routes, function ($route, $key)
             use ($firstSegment) {

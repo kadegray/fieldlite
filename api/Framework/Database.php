@@ -67,10 +67,6 @@ class Database
             return;
         }
 
-        if (count($response) == 1) {
-            return $response[0];
-        }
-
         return $response;
     }
 }

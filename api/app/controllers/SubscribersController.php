@@ -3,9 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\Subscriber;
+use App\Requests\SubscriberRequest as Request;
 use Framework\Controller;
 use Framework\Model;
-use Framework\Request;
 use Framework\Response;
 
 class SubscribersController extends Controller {

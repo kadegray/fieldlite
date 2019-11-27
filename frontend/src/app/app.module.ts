@@ -6,15 +6,21 @@ import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SubscribersComponent } from './subscribers/subscribers.component';
 
-import { MatTableModule } from '@angular/material';
+import { MatTableModule, MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
+import { CreateSubscriberDialogComponent } from './create-subscriber-dialog/create-subscriber-dialog.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SubscribersComponent
+    SubscribersComponent,
+    CreateSubscriberDialogComponent
+  ],
+  entryComponents: [
+    CreateSubscriberDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -23,7 +29,12 @@ import { HttpClientModule } from '@angular/common/http';
     MatTableModule,
     MatCardModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

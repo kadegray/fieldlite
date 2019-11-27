@@ -2,6 +2,9 @@
 
 namespace Framework;
 
+use Framework\Validation\UniqueRule;
+use Rakit\Validation\Validator;
+
 class Request
 {
     public $method = [];
@@ -9,21 +12,51 @@ class Request
     public $requestData = [];
     public $modelsBasedOnRestUri = [];
 
+    public $validator;
+    public $validation = [];
+
     public function __construct()
     {
         $this->requestUri = data_get($_SERVER, 'REQUEST_URI');
         $this->requestData = $_REQUEST;
+        if (!$this->requestData) {
+            $this->requestData = json_decode(file_get_contents('php://input'), true);
+        }
         $this->correctPutRequestMethodIssue();
         $this->method = strtolower($_SERVER['REQUEST_METHOD']);
         $this->modelsBasedOnRestUri = $this->generateResourceModelsFromIds();
+
+        $this->validator = new Validator;
+        $this->validator->addValidator('unique', new UniqueRule());
+        $this->validate();
+    }
+
+    public function rules() {
+        return [];
+    }
+
+    public function validate()
+    {
+        $rules = $this->rules();
+
+        if (!count(array_keys($rules))) {
+            return;
+        }
+
+        $validation = $this->validator->make($this->requestData, $rules);
+        $validation->validate();
+
+        if (!$validation->fails()) {
+            return true;
+        }
+
+        $errors = $validation->errors();
+        new Response($errors->firstOfAll());
     }
 
     protected function correctPutRequestMethodIssue()
     {
-        if (!in_array(data_get($_SERVER, 'REQUEST_METHOD'), [
-            'PUT',
-            'DELETE'
-        ])) {
+        if (data_get($_SERVER, 'REQUEST_METHOD') === 'POST') {
             $lastSegment = explode('/', $this->requestUri);
             $lastSegment = array_last($lastSegment);
             if (is_numeric($lastSegment)) {
@@ -73,6 +106,16 @@ class Request
     public function data()
     {
         return $this->requestData;
+    }
+
+    public static function getRequestClassByModel($modelName)
+    {
+        $modelClass = Model::getModelClassByModelName($modelName);
+
+        $modelName = explode('\\', $modelClass);
+        $modelName = array_last($modelName);
+
+        return 'App\\Requests\\' . $modelName . 'Request';
     }
 
 }
