@@ -3,6 +3,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { Subscriber } from '../subscribers/subscribers.component';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
+import _ from 'lodash';
 
 @Component({
   selector: 'app-create-subscriber-dialog',
@@ -41,7 +42,9 @@ export class CreateSubscriberDialogComponent {
 
   onNoClick(): void {
     this.dialogRef.close();
-    this.formGroup.reset();
+    if (!_.get(this, 'data.id')) {
+      this.formGroup.reset();
+    }
   }
 
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreateSubscriberDialogComponent } from '../create-subscriber-dialog/create-subscriber-dialog.component';
+import _ from 'lodash';
 
 export interface Subscriber {
   id?: number;
@@ -33,6 +34,14 @@ export class SubscribersComponent {
     'actions'
   ];
 
+  stateNames: Array<string> = [
+    'Active',
+    'Unsubscribed',
+    'Junk',
+    'Bounced',
+    'Unconfirmed'
+  ];
+
   constructor(
     private http: HttpClient,
     public dialog: MatDialog
@@ -41,7 +50,7 @@ export class SubscribersComponent {
       .subscribe((subscribers: Array<Subscriber>) => this.subscribers = subscribers);
   }
 
-  openCreateSubscriberDialog(subscriberData: any): void {
+  openSubscriberDialog(subscriberData: any): void {
 
     const requestMethod = !!subscriberData ? 'put' : 'post';
     subscriberData = requestMethod === 'post' ? this.newSubscriber : subscriberData;
@@ -58,5 +67,12 @@ export class SubscribersComponent {
           this.subscribers.push(subscriber);
         });
     });
+  }
+
+  getStateFromSubscriberData(subscriberData: any): string {
+
+    const stateId = subscriberData.state;
+
+    return _.get(this.stateNames, stateId - 1);
   }
 }
