@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreateSubscriberDialogComponent } from '../create-subscriber-dialog/create-subscriber-dialog.component';
-// import { HttpHeaders } from '@angular/common/http';
 
 export interface Subscriber {
   id?: number;
@@ -42,16 +41,19 @@ export class SubscribersComponent {
       .subscribe((subscribers: Array<Subscriber>) => this.subscribers = subscribers);
   }
 
-  openDialog(): void {
+  openCreateSubscriberDialog(subscriberData: any): void {
+
+    const requestMethod = !!subscriberData ? 'put' : 'post';
+    subscriberData = requestMethod === 'post' ? this.newSubscriber : subscriberData;
+    const endpoint = requestMethod === 'post' ? '/api/subscriber' : '/api/subscriber/' + subscriberData.id;
+
     const dialogRef = this.dialog.open(CreateSubscriberDialogComponent, {
       width: '420px',
-      data: this.newSubscriber
+      data: subscriberData
     });
 
-    dialogRef.afterClosed().subscribe(subscriber => {
-      console.log('The dialog was closed', this.newSubscriber);
-
-      this.http.post('/api/subscriber', this.newSubscriber)
+    dialogRef.afterClosed().subscribe(() => {
+      this.http[requestMethod](endpoint, subscriberData)
         .subscribe((subscriber: Subscriber) => {
           this.subscribers.push(subscriber);
         });

@@ -3,7 +3,7 @@
   <mat-card-header>
     <mat-card-title>Subscribers</mat-card-title>
     <div fxFlex></div>
-    <button mat-flat-button (click)="openDialog()" color="primary">Create</button>
+    <button mat-flat-button (click)="openCreateSubscriberDialog()" color="primary">Create</button>
   </mat-card-header>
 
   <mat-card-content>
@@ -37,7 +37,10 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef> Actions </th>
         <td mat-cell *matCellDef="let element">
-          <button mat-flat-button color="primary">Edit</button>
+          <button mat-flat-button color="primary"
+             (click)="openCreateSubscriberDialog(element)">
+            Edit
+          </button>
         </td>
       </ng-container>
 
