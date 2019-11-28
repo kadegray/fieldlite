@@ -2,8 +2,8 @@
 
 namespace Framework;
 
-class Response {
-
+class Response
+{
     protected $contentType = 'application/json';
 
     public function __construct(

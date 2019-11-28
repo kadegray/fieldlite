@@ -4,10 +4,9 @@ namespace App\Models;
 
 use Framework\Database;
 use Framework\Model;
-use Framework\Response;
 
-class Subscriber extends Model {
-
+class Subscriber extends Model
+{
     public $tableName = 'subscribers';
 
     public const STATE_ACTIVE = 1;
@@ -45,5 +44,4 @@ class Subscriber extends Model {
 
         return Database::query($query);
     }
-
 }

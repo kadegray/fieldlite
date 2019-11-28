@@ -7,7 +7,7 @@ use Rakit\Validation\Rule;
 
 class UniqueRule extends Rule
 {
-    protected $message = ":attribute :value has been used";
+    protected $message = ':attribute :value has been used';
 
     protected $fillableParams = ['table', 'column', 'except'];
 
@@ -19,7 +19,7 @@ class UniqueRule extends Rule
         $table = $this->parameter('table');
         $except = $this->parameter('except');
 
-        if ($except AND $except == $value) {
+        if ($except and $except == $value) {
             return true;
         }
 

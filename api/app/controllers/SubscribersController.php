@@ -8,8 +8,8 @@ use Framework\Controller;
 use Framework\Model;
 use Framework\Response;
 
-class SubscribersController extends Controller {
-
+class SubscribersController extends Controller
+{
     public function index(Request $request)
     {
         $subscribers = Subscriber::all();
@@ -53,5 +53,4 @@ class SubscribersController extends Controller {
     {
         new Response($subscriber->delete(), 200);
     }
-
 }

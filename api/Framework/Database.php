@@ -65,7 +65,7 @@ class Database
         }
 
         $response = [];
-        while($row = $result->fetch_assoc()) {
+        while ($row = $result->fetch_assoc()) {
             $response[] = $row;
         }
 

@@ -2,6 +2,6 @@
 
 namespace Framework;
 
-abstract class Controller {
-
+abstract class Controller
+{
 }

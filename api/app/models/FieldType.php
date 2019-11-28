@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Framework\Model;
 
-class FieldType extends Model {
-
+class FieldType extends Model
+{
     public $tableName = 'field_types';
 
     public $fields = [
@@ -19,5 +19,4 @@ class FieldType extends Model {
         'type',
         'title',
     ];
-
 }

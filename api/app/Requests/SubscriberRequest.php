@@ -4,8 +4,8 @@ namespace App\Requests;
 
 use Framework\Request;
 
-class SubscriberRequest extends Request {
-
+class SubscriberRequest extends Request
+{
     public function rules()
     {
         $rules = [];

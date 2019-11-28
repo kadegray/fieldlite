@@ -79,9 +79,7 @@ class Router
             return;
         }
 
-        $foundRoute = Arr::where(self::$routes, function ($route, $key)
-            use ($firstSegment) {
-
+        $foundRoute = Arr::where(self::$routes, function ($route, $key) use ($firstSegment) {
             list(
                 $requestMethod,
                 $resourceName,

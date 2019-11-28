@@ -1,0 +1,14 @@
+// Place your settings in this file to overwrite default and user settings.
+{
+    "php-cs-fixer.config": "api/config.php_cs",
+    "editor.tabSize": 4,
+    "editor.detectIndentation": false,
+    "files.trimTrailingWhitespace": true,
+    "eslint.enable": true,
+    "eslint.workingDirectories": [
+        "frontend/src"
+    ],
+    "eslint.run": "onSave",
+    "eslint.validate": ["javascript"],
+    "eslint.autoFixOnSave": true
+}

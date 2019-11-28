@@ -31,7 +31,8 @@ class Request
         $this->validate();
     }
 
-    public function rules() {
+    public function rules()
+    {
         return [];
     }
 
@@ -117,5 +118,4 @@ class Request
 
         return 'App\\Requests\\' . $modelName . 'Request';
     }
-
 }

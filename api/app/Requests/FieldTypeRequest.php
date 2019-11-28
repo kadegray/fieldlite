@@ -4,8 +4,8 @@ namespace App\Requests;
 
 use Framework\Request;
 
-class FieldTypeRequest extends Request {
-
+class FieldTypeRequest extends Request
+{
     public function rules()
     {
         $rules = [];
