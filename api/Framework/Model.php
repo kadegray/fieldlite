@@ -2,7 +2,6 @@
 
 namespace Framework;
 
-use Framework\Database;
 use Illuminate\Support\Str;
 use JsonSerializable;
 
@@ -20,20 +19,32 @@ class Model implements JsonSerializable
 
     public function __construct($fieldDataArray = [])
     {
-        if (!$this->plural) {
-            $this->plural = $this->tableName;
-        }
+        $this->plural = Str::plural($this->tableName);
+        $this->singular = Str::singular($this->tableName);
 
         if ($fieldDataArray) {
-            $this->fill($fieldDataArray);
+            $this->fillAll($fieldDataArray);
         }
     }
 
-    public function jsonSerialize() {
-        return $this->_fieldData;
+    public function jsonSerialize()
+    {
+        $attributes = [];
+        $classMethods = get_class_methods($this);
+        foreach ($classMethods as $classMethod) {
+            if (Str::startsWith($classMethod, 'getAttribute')) {
+                $atributeName = Str::replaceFirst('getAttribute', '', $classMethod);
+                $atributeName = Str::snake($atributeName);
+
+                $attributes[$atributeName] = $this->$classMethod();
+            }
+        }
+
+        return array_merge($this->_fieldData, $attributes);
     }
 
     public static $modelClasses = [];
+
     public static function addModelClass($class)
     {
         if (in_array($class, self::$modelClasses)) {
@@ -45,15 +56,14 @@ class Model implements JsonSerializable
 
     public function fillAll(array $array)
     {
-        foreach($array as $fieldName => $newFieldValue) {
+        foreach ($array as $fieldName => $newFieldValue) {
             data_set($this, '_' . $fieldName, $newFieldValue);
         }
     }
 
     public function fill($array)
     {
-        foreach($array as $fieldName => $newFieldValue) {
-
+        foreach ($array as $fieldName => $newFieldValue) {
             // is it fillable?
             if (!in_array($fieldName, $this->fillable)) {
                 continue;
@@ -150,7 +160,7 @@ class Model implements JsonSerializable
         $query = "INSERT INTO $this->tableName ";
         $query .= '(' . implode(', ', $this->_fieldsChanged) . ') ';
         $values = [];
-        foreach($this->_fieldsChanged as $changedField) {
+        foreach ($this->_fieldsChanged as $changedField) {
             $values[] = $this->$changedField;
         }
         $query .= 'VALUES ("' . implode('", "', $values) . '");';
@@ -163,7 +173,7 @@ class Model implements JsonSerializable
         $query = "UPDATE $this->tableName ";
         $query .= 'SET ';
         $updates = [];
-        foreach($this->_fieldsChanged as $changedFieldName) {
+        foreach ($this->_fieldsChanged as $changedFieldName) {
             $updates[] = $changedFieldName . ' = "' . $this->$changedFieldName . '"';
         }
         $query .= implode(', ', $updates) . ' ';
@@ -186,7 +196,13 @@ class Model implements JsonSerializable
         $query = "SELECT * FROM $modelInstance->tableName;";
         $all = Database::query($query);
 
-        return $all;
+        $modelClass = self::getModelClassByModelName($modelInstance->singular);
+        $response = [];
+        foreach ($all as $row) {
+            $response[] = new $modelClass($row);
+        }
+
+        return $response;
     }
 
     public static function find(int $id)
@@ -205,44 +221,21 @@ class Model implements JsonSerializable
         return $modelInstance;
     }
 
-    public static function getModelClassWithSingularName($singularName)
+    public static function getModelClassByModelName($name)
     {
         $modelClassNames = self::getModelClassesFromModelFiles();
 
-        foreach($modelClassNames as $modelClassName) {
-            if (Str::endsWith(strtolower($modelClassName), $singularName)) {
+        foreach ($modelClassNames as $modelClassName) {
+            $modelName = Str::replaceFirst('App\Models\\', '', $modelClassName);
+            $modelName = Str::studly($modelName);
+            $modelName = Str::singular($modelName);
 
+            $name = Str::studly($name);
+            $name = Str::singular($name);
+
+            if ($modelName === $name) {
                 return $modelClassName;
             }
-        }
-    }
-
-    public static function getModelClassWithPlural($plural)
-    {
-        $modelClassNames = self::getModelClassesFromModelFiles();
-        $plural = strtolower($plural);
-
-        foreach($modelClassNames as $modelClassName) {
-
-            $modelsPlural = (new $modelClassName)->plural;
-            $modelsPlural = strtolower($modelsPlural);
-
-            if ($modelsPlural === $plural) {
-                return $modelClassName;
-            }
-        }
-    }
-
-    public static function getModelClassByModelName($modelName)
-    {
-        $singular = self::getModelClassWithSingularName($modelName);
-        if ($singular) {
-            return $singular;
-        }
-
-        $plural = self::getModelClassWithPlural($modelName);
-        if ($plural) {
-            return $plural;
         }
     }
 
@@ -252,7 +245,6 @@ class Model implements JsonSerializable
         $modelClassNames = [];
 
         foreach ($modelFiles as $fileName) {
-
             if (!Str::endsWith($fileName, '.php')) {
                 continue;
             }
@@ -263,5 +255,4 @@ class Model implements JsonSerializable
 
         return $modelClassNames;
     }
-
 }

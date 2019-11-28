@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { CreateSubscriberDialogComponent } from '../create-subscriber-dialog/create-subscriber-dialog.component';
+import { CreateSubscriberDialogComponent, SubscriberField } from '../create-subscriber-dialog/create-subscriber-dialog.component';
 import _ from 'lodash';
 
 export interface Subscriber {
@@ -10,6 +10,7 @@ export interface Subscriber {
   first_name: string;
   last_name: string;
   state: number;
+  fields: Array<SubscriberField>;
 }
 
 @Component({
@@ -24,7 +25,8 @@ export class SubscribersComponent {
     first_name: '',
     last_name: '',
     email_address: '',
-    state: 1
+    state: 1,
+    fields: []
   };
   displayedColumns: string[] = [
     'email_address',
@@ -34,7 +36,7 @@ export class SubscribersComponent {
     'actions'
   ];
 
-  stateNames: Array<string> = [
+  stateNames: string[] = [
     'Active',
     'Unsubscribed',
     'Junk',
@@ -64,7 +66,22 @@ export class SubscribersComponent {
     dialogRef.afterClosed().subscribe(() => {
       this.http[requestMethod](endpoint, subscriberData)
         .subscribe((subscriber: Subscriber) => {
-          this.subscribers.push(subscriber);
+
+          const subscriberId = _.get(subscriber, 'id');
+          const subscribers: Array<any> = _.clone(this.subscribers);
+
+          let existingSubscriber = _.find(subscribers, (s) => {
+            return s.id === subscriberId;
+          });
+          if (existingSubscriber) {
+            existingSubscriber = subscriber;
+            this.subscribers = subscribers;
+
+            return;
+          }
+
+          subscribers.push(subscriber);
+          this.subscribers = subscribers;
         });
     });
   }

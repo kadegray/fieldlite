@@ -3,6 +3,7 @@
 namespace Framework;
 
 use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 class Router
 {
@@ -18,13 +19,13 @@ class Router
         array_shift($firstSegment);
         $firstSegment = array_first($firstSegment);
 
-        if (Model::getModelClassWithPlural($firstSegment)) {
+        if (Str::plural($firstSegment) === $firstSegment) {
             self::processIndexRoute($firstSegment);
 
             return;
         }
 
-        if (Model::getModelClassWithSingularName($firstSegment)) {
+        if (Str::singular($firstSegment) === $firstSegment) {
             foreach (self::$routes as $route) {
                 self::processRoute($firstSegment, $route);
             }
@@ -122,7 +123,7 @@ class Router
 
     public static function method()
     {
-        return ;
+        return;
     }
 
     public static function resource($resourceName, $controller)
@@ -136,12 +137,8 @@ class Router
             self::$requestMethod($resourceName, $controller, $controllerMethod);
         }
 
-        $modelClass = Model::getModelClassWithSingularName($resourceName);
-        if (!$modelClass) {
-            return;
-        }
+        $plural = Str::plural($resourceName);
 
-        $modelPlural = (new $modelClass)->plural;
-        self::get($modelPlural, $controller, 'index');
+        self::get($plural, $controller, 'index');
     }
 }

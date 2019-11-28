@@ -92,7 +92,7 @@ class Request
         $resourceIds = $this->generateResourceIds();
         $models = [];
         foreach ($resourceIds as $singularName => $modelId) {
-            $className = Model::getModelClassWithSingularName($singularName);
+            $className = Model::getModelClassByModelName($singularName);
             if (!$className) {
                 continue;
             }

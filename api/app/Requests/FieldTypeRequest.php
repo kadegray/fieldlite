@@ -4,7 +4,7 @@ namespace App\Requests;
 
 use Framework\Request;
 
-class FieldRequest extends Request {
+class FieldTypeRequest extends Request {
 
     public function rules()
     {
@@ -19,10 +19,6 @@ class FieldRequest extends Request {
                 'title' => 'required|email|unique:users,email_address',
                 'type' => 'required|between:1,255',
             ];
-        }
-
-        if ($this->method === 'put') {
-            data_set($rules, 'id', 'required|numeric');
         }
 
         return $rules;

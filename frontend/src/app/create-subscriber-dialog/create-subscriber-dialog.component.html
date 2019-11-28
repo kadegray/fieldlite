@@ -1,28 +1,24 @@
-<h1 mat-dialog-title>Create a new subscriber</h1>
+<h1 mat-dialog-title>{{data.id ? (data.first_name + ' ' + data.last_name) : 'Create a new subscriber'}} </h1>
 
 <div mat-dialog-content>
   <form [formGroup]="formGroup">
 
     <mat-form-field>
-      <input matInput required
-        placeholder="Email Address" [(ngModel)]="data.email_address"
+      <input matInput required placeholder="Email Address" [(ngModel)]="data.email_address"
         formControlName="email_address">
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" required
-        placeholder="First Name" [(ngModel)]="data.first_name"
+      <input matInput type="text" required placeholder="First Name" [(ngModel)]="data.first_name"
         formControlName="first_name">
     </mat-form-field>
     <mat-form-field>
-      <input matInput type="text" required
-        placeholder="Last Name" [(ngModel)]="data.last_name"
+      <input matInput type="text" required placeholder="Last Name" [(ngModel)]="data.last_name"
         formControlName="last_name">
     </mat-form-field>
 
     <mat-form-field>
       <mat-label>State</mat-label>
-      <select matNativeControl required [(ngModel)]="data.state"
-        formControlName="state">
+      <select matNativeControl required [(ngModel)]="data.state" formControlName="state">
         <option value="1">Active</option>
         <option value="2">Unsubscribed</option>
         <option value="3">Junk</option>
@@ -31,10 +27,25 @@
       </select>
     </mat-form-field>
 
+    <mat-form-field>
+      <mat-label>Add Field</mat-label>
+      <mat-select (selectionChange)="addFieldType($event)">
+        <mat-option *ngFor="let fieldType of fieldTypes" [value]="fieldType.id">
+          {{fieldType.title}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field *ngFor="let field of data.fields">
+      <input matInput type="text" required [placeholder]="field.title"
+        [(ngModel)]="field.data" [formControlName]="getFormControlName(field.title)">
+    </mat-form-field>
+
   </form>
 </div>
 
 <div mat-dialog-actions>
   <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="formGroup.valid" cdkFocusInitial [disabled]="!formGroup.valid">{{data.id ? 'Save' : 'Create'}}</button>
+  <button mat-button [mat-dialog-close]="formGroup.valid" cdkFocusInitial
+    [disabled]="!formGroup.valid">{{data.id ? 'Save' : 'Create'}}</button>
 </div>

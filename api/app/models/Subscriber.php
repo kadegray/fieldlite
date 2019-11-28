@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Framework\Database;
 use Framework\Model;
+use Framework\Response;
 
 class Subscriber extends Model {
 
     public $tableName = 'subscribers';
-    public $singular = 'subscriber';
 
     public const STATE_ACTIVE = 1;
     public const STATE_UNSUBSCRIBED = 2;
@@ -30,5 +31,19 @@ class Subscriber extends Model {
         'last_name',
         'state'
     ];
+
+    public function getAttributeFields()
+    {
+        $query = "SELECT
+            field_subscriber.id,
+            field_types.title,
+            field_types.type,
+            field_subscriber.data
+        FROM field_subscriber
+        LEFT JOIN field_types ON field_types.id = field_subscriber.field_type_id
+        WHERE field_subscriber.subscriber_id = $this->id";
+
+        return Database::query($query);
+    }
 
 }

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SubscribersComponent } from './subscribers/subscribers.component';
 
-import { MatTableModule, MatDialogModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { MatTableModule, MatDialogModule, MatFormFieldModule, MatInputModule, MatToolbarModule, MatIconModule, MatSelectModule, MatGridListModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { HttpClientModule } from '@angular/common/http';
@@ -35,6 +35,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     MatFormFieldModule,
     MatInputModule,
+    MatToolbarModule,
+    MatIconModule,
+    MatSelectModule,
+    MatGridListModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,21 +4,20 @@ namespace App\Models;
 
 use Framework\Model;
 
-class Field extends Model {
+class FieldType extends Model {
 
-    public $tableName = 'fields';
-    public $singular = 'field';
+    public $tableName = 'field_types';
 
     public $fields = [
         'id',
-        'title',
         'type',
+        'title',
         'updated_at',
         'created_at'
     ];
     public $fillable = [
-        'title',
         'type',
+        'title',
     ];
 
 }

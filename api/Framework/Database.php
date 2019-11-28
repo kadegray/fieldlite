@@ -2,6 +2,8 @@
 
 namespace Framework;
 
+use Illuminate\Support\Str;
+
 class Database
 {
     private static $connection = null;
@@ -48,6 +50,10 @@ class Database
 
         if (!$result) {
             printf("Query error message: %s\n", $connection->error);
+        }
+
+        if (Str::startsWith($query, 'INSERT')) {
+            return $connection->insert_id;
         }
 
         if (is_bool($result)) {

@@ -28,10 +28,6 @@ class SubscriberRequest extends Request {
             data_set($rules, 'email_address', $emailAddressRule . '|unique:subscribers,email_address');
         }
 
-        if ($this->method === 'put') {
-            data_set($rules, 'id', 'required|integer');
-        }
-
         return $rules;
     }
 }

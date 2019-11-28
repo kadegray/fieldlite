@@ -30,7 +30,8 @@ class SubscribersController extends Controller {
     {
         $requestData = $request->data();
         $subscriber = new Subscriber($requestData);
-        $subscriber->save();
+        $id = $subscriber->save();
+        $subscriber = Subscriber::find($id);
 
         new Response($subscriber);
     }

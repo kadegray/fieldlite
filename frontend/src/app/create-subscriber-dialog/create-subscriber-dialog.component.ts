@@ -4,6 +4,20 @@ import { Subscriber } from '../subscribers/subscribers.component';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import _ from 'lodash';
+import { MatSelectChange } from '@angular/material';
+
+export interface FieldType {
+  id: number;
+  type: string;
+  title: string;
+}
+
+export interface SubscriberField {
+  id: number;
+  title: string;
+  type: number;
+  data: string;
+}
 
 @Component({
   selector: 'app-create-subscriber-dialog',
@@ -12,7 +26,9 @@ import _ from 'lodash';
 })
 export class CreateSubscriberDialogComponent {
 
+  fieldTypes: FieldType[] = [];
   formGroup: FormGroup;
+  formControls = {};
 
   constructor(
     public dialogRef: MatDialogRef<CreateSubscriberDialogComponent>,
@@ -20,6 +36,9 @@ export class CreateSubscriberDialogComponent {
     private formBuilder: FormBuilder,
     private http: HttpClient
   ) {
+    this.http.get('/api/field-types')
+      .subscribe((fieldTypes: Array<FieldType>) => this.fieldTypes = fieldTypes);
+
     this.formGroup = this.formBuilder.group({
       email_address: new FormControl(data.email_address, [
         Validators.required,
@@ -38,6 +57,26 @@ export class CreateSubscriberDialogComponent {
         Validators.required
       ])
     });
+
+    _.forEach(data.fields, (field) => {
+      this.addFieldToFormGroup(field);
+    });
+  }
+
+  addFieldToFormGroup(field) {
+    const formControlName = this.getFormControlName(field.title);
+    const validators = [
+      // Validators.required
+    ];
+
+    if (field.pattern) {
+      validators.push(Validators.pattern(field.pattern));
+    }
+
+    this.formGroup.addControl(
+      formControlName,
+      new FormControl(field.data, validators)
+    );
   }
 
   onNoClick(): void {
@@ -45,6 +84,28 @@ export class CreateSubscriberDialogComponent {
     if (!_.get(this, 'data.id')) {
       this.formGroup.reset();
     }
+  }
+
+  addFieldType(event: MatSelectChange): void {
+    console.log('addFieldType', event);
+
+    const fieldTypeId = event.value;
+    const fields = this.data.fields;
+
+    const newField = {
+      id: 100,
+      title: 'test',
+      type: 1,
+      data: ''
+    };
+    fields.push(newField);
+
+    this.addFieldToFormGroup(newField);
+    this.data.fields = fields;
+  }
+
+  getFormControlName(name) {
+    return _.snakeCase(name);
   }
 
 }
