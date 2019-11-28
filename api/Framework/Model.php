@@ -23,6 +23,7 @@ class Model implements JsonSerializable
         $this->singular = Str::singular($this->tableName);
 
         if ($fieldDataArray) {
+            $this->fill($fieldDataArray);
             $this->fillAll($fieldDataArray);
         }
     }
@@ -211,7 +212,7 @@ class Model implements JsonSerializable
         $query = "SELECT * FROM $modelInstance->tableName WHERE id = $id;";
 
         $found = Database::query($query);
-        if (!count($found)) {
+        if (is_array($found) && !count($found)) {
             return;
         }
 

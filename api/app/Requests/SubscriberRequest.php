@@ -16,7 +16,7 @@ class SubscriberRequest extends Request
 
         if (in_array($this->method, ['post', 'put'])) {
             $rules = [
-                'email_address' => 'required|email',
+                'email_address' => 'required|email|email_domain_active',
                 'first_name' => 'required|between:1,255',
                 'last_name' => 'required|between:1,255',
                 'state' => 'required|integer',

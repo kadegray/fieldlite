@@ -69,7 +69,7 @@ class Database
             $response[] = $row;
         }
 
-        if (!count($response)) {
+        if (is_array($response) && !count($response)) {
             return;
         }
 

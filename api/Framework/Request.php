@@ -2,6 +2,7 @@
 
 namespace Framework;
 
+use Framework\Validation\EmailDomainActiveRule;
 use Framework\Validation\UniqueRule;
 use Rakit\Validation\Validator;
 
@@ -28,6 +29,7 @@ class Request
 
         $this->validator = new Validator;
         $this->validator->addValidator('unique', new UniqueRule());
+        $this->validator->addValidator('email_domain_active', new EmailDomainActiveRule());
         $this->validate();
     }
 
