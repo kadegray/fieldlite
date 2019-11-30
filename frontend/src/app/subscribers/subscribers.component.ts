@@ -63,7 +63,12 @@ export class SubscribersComponent {
       data: subscriberData
     });
 
-    dialogRef.afterClosed().subscribe(() => {
+    dialogRef.afterClosed().subscribe((buttonClicked) => {
+
+      if (buttonClicked === 'cancel') {
+        return;
+      }
+
       this.http[requestMethod](endpoint, subscriberData)
         .subscribe((subscriber: Subscriber) => {
 

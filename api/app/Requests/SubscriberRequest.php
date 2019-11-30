@@ -16,7 +16,7 @@ class SubscriberRequest extends Request
 
         if (in_array($this->method, ['post', 'put'])) {
             $rules = [
-                'email_address' => 'required|email|email_domain_active',
+                'email_address' => 'required|email',
                 'first_name' => 'required|between:1,255',
                 'last_name' => 'required|between:1,255',
                 'state' => 'required|integer',
@@ -25,7 +25,7 @@ class SubscriberRequest extends Request
 
         if ($this->method === 'post') {
             $emailAddressRule = data_get($rules, 'email_address');
-            data_set($rules, 'email_address', $emailAddressRule . '|unique:subscribers,email_address');
+            data_set($rules, 'email_address', $emailAddressRule . '|email_domain_active|unique:subscribers,email_address');
         }
 
         return $rules;

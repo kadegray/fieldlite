@@ -27,25 +27,54 @@
       </select>
     </mat-form-field>
 
+    <h4>Additional Fields</h4>
+
     <mat-form-field>
       <mat-label>Add Field</mat-label>
       <mat-select (selectionChange)="addFieldType($event)">
-        <mat-option *ngFor="let fieldType of fieldTypes" [value]="fieldType.id">
+        <mat-option *ngFor="let fieldType of getFieldTypesForSelect()" [value]="fieldType.id">
           {{fieldType.title}}
         </mat-option>
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field *ngFor="let field of data.fields">
-      <input matInput type="text" required [placeholder]="field.title"
-        [(ngModel)]="field.data" [formControlName]="getFormControlName(field.title)">
+
+    <mat-form-field *ngIf="phoneNumber">
+      <input matInput type="text" required placeholder="{{phoneNumber.title}}" [(ngModel)]="phoneNumber.data"
+        [formControlName]="getFormControlName(phoneNumber.title)">
     </mat-form-field>
+
+    <mat-form-field *ngIf="country">
+      <input matInput type="text" required placeholder="{{country.title}}" [(ngModel)]="country.data"
+        [formControlName]="getFormControlName(country.title)">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="postCode">
+      <input matInput type="text" required placeholder="{{postCode.title}}" [(ngModel)]="postCode.data"
+        [formControlName]="getFormControlName(postCode.title)">
+    </mat-form-field>
+
+    <mat-form-field *ngIf="dateOfBirth">
+      <input matInput [matDatepicker]="picker" placeholder="{{dateOfBirth.title}}"
+        [(ngModel)]="dateOfBirth.data" [formControlName]="getFormControlName(dateOfBirth.title)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field *ngIf="engagedCustomer">
+      <mat-label>{{engagedCustomer.title}}</mat-label>
+      <mat-select [formControlName]="getFormControlName(engagedCustomer.title)" [(ngModel)]="engagedCustomer.data">
+        <mat-option value="1">Yes</mat-option>
+        <mat-option value="0">No</mat-option>
+      </mat-select>
+    </mat-form-field>
+
 
   </form>
 </div>
 
-<div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button [mat-dialog-close]="formGroup.valid" cdkFocusInitial
+<div mat-dialog-actions *ngIf="!updatingFormGroup">
+  <button mat-button (click)="cancelButtonClick()">Cancel</button>
+  <button mat-button (click)="saveButtonClick()" cdkFocusInitial
     [disabled]="!formGroup.valid">{{data.id ? 'Save' : 'Create'}}</button>
 </div>

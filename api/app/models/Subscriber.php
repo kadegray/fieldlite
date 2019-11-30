@@ -37,7 +37,8 @@ class Subscriber extends Model
             field_subscriber.id,
             field_types.title,
             field_types.type,
-            field_subscriber.data
+            field_subscriber.data,
+            field_types.id as field_type_id
         FROM field_subscriber
         LEFT JOIN field_types ON field_types.id = field_subscriber.field_type_id
         WHERE field_subscriber.subscriber_id = $this->id";

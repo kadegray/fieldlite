@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import { HttpClient } from '@angular/common/http';
 import _ from 'lodash';
 import { MatSelectChange } from '@angular/material';
+import { delay } from 'q';
+import { Observable, Observer } from 'rxjs';
 
 export interface FieldType {
   id: number;
@@ -17,6 +19,7 @@ export interface SubscriberField {
   title: string;
   type: number;
   data: string;
+  field_type_id: number;
 }
 
 @Component({
@@ -26,9 +29,16 @@ export interface SubscriberField {
 })
 export class CreateSubscriberDialogComponent {
 
-  fieldTypes: FieldType[] = [];
+  fieldTypes: Array<FieldType> = [];
   formGroup: FormGroup;
   formControls = {};
+  updatingFormGroup: boolean;
+
+  phoneNumber: any;
+  country: any;
+  postCode: any;
+  dateOfBirth: any;
+  engagedCustomer: any;
 
   constructor(
     public dialogRef: MatDialogRef<CreateSubscriberDialogComponent>,
@@ -37,7 +47,10 @@ export class CreateSubscriberDialogComponent {
     private http: HttpClient
   ) {
     this.http.get('/api/field-types')
-      .subscribe((fieldTypes: Array<FieldType>) => this.fieldTypes = fieldTypes);
+      .subscribe((fieldTypes: Array<FieldType>) => {
+        this.fieldTypes = fieldTypes;
+        this.updateFieldVariables();
+      });
 
     this.formGroup = this.formBuilder.group({
       email_address: new FormControl(data.email_address, [
@@ -63,7 +76,18 @@ export class CreateSubscriberDialogComponent {
     });
   }
 
+  updateFieldVariables() {
+
+    _.forEach(this.fieldTypes, (fieldType) => {
+      let field = this.subscriberHasFieldOfType(fieldType.id);
+      let fieldName = _.camelCase(fieldType.title);
+      _.set(this, fieldName, field);
+    });
+  }
+
   addFieldToFormGroup(field) {
+
+    this.updatingFormGroup = true;
     const formControlName = this.getFormControlName(field.title);
     const validators = [
       // Validators.required
@@ -77,26 +101,46 @@ export class CreateSubscriberDialogComponent {
       formControlName,
       new FormControl(field.data, validators)
     );
+    this.updatingFormGroup = false;
+
+    this.updateFieldVariables();
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  cancelButtonClick(): void {
+    this.dialogRef.close('cancel');
     if (!_.get(this, 'data.id')) {
       this.formGroup.reset();
     }
   }
 
+  saveButtonClick(): void {
+    this.dialogRef.close('save');
+  }
+
+  getFieldTypesForSelect() {
+
+    const existingFieldTypes = _.map(this.data.fields, 'field_type_id');
+
+    return _.filter(this.fieldTypes, (fieldType) => {
+      return !_.includes(existingFieldTypes, fieldType.id);
+    });
+  }
+
   addFieldType(event: MatSelectChange): void {
-    console.log('addFieldType', event);
 
     const fieldTypeId = event.value;
-    const fields = this.data.fields;
+    let fieldType = _.filter(this.fieldTypes, (fieldType) => {
+      return fieldType.id === fieldTypeId;
+    });
+    fieldType = _.get(fieldType, '0');
 
+    const fields = this.data.fields ? this.data.fields : [];
     const newField = {
-      id: 100,
-      title: 'test',
-      type: 1,
-      data: ''
+      id: null,
+      title: fieldType.title,
+      type: fieldType.type,
+      data: '',
+      field_type_id: fieldTypeId
     };
     fields.push(newField);
 
@@ -105,7 +149,15 @@ export class CreateSubscriberDialogComponent {
   }
 
   getFormControlName(name) {
+
     return _.snakeCase(name);
+  }
+
+  subscriberHasFieldOfType(fieldTypeId: number) {
+
+    return _.first(_.filter(this.data.fields, (field) => {
+      return field.field_type_id == fieldTypeId;
+    }));
   }
 
 }
