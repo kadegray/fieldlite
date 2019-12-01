@@ -5,7 +5,7 @@ services:
   api:
     build:
         context: ./
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile
     volumes:
       - api_sync:/var/www/html:nocopy
     ports:

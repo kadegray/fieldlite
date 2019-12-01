@@ -12,15 +12,11 @@ RUN apt-get update
 COPY default.conf /etc/nginx/conf.d/default.conf
 COPY php.ini /usr/local/etc/php/conf.d/
 
-# copy source files and run composer
-COPY api $APP_HOME
-
 WORKDIR $APP_HOME
 
-# install all PHP dependencies
-RUN composer install --no-interaction
+RUN composer install
 
 # change ownership of our applications
 RUN chown -R www-data:www-data $APP_HOME
 
-EXPOSE 80
+EXPOSE 9000
