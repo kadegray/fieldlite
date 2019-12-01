@@ -23,7 +23,7 @@ services:
     image: mysql:5.7
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=subscribersfields
+      - MYSQL_DATABASE=fieldlite
     ports:
       - "33061:3306"
     volumes:

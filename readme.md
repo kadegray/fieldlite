@@ -16,12 +16,12 @@ If you have trouble installing unison i recomend installing the app and on openi
 
 This will build
 
-    ./docker-compose
+    ./docker-compose build
 
 > Note: On OSX you may get this error "mkmf.rb can't find header files". This resolved it for me https://github.com/EugenMayer/docker-sync/issues/679#issuecomment-534074764
 
 
-Repeat this command after the build to compose it
+This command will compose it
 
     ./docker-compose
 
@@ -50,7 +50,7 @@ Create a database with the name fieldlite and import /database_schema.sql
     cd frontend
     npm i
     npm install -g @angular/cli
-    ng serve
+    ng serve --open
 
 ### frontend URL
 http://localhost:4200/
