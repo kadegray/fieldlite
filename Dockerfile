@@ -1,5 +1,7 @@
 FROM businesstools/nginx-php:1.9.3
 
+COPY api /var/www/html
+
 # set our application folder as an environment variable
 ENV APP_HOME /var/www/html
 
