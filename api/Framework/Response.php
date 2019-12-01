@@ -12,7 +12,9 @@ class Response
     ) {
         header('Content-type: ' . $this->contentType);
         http_response_code($reponseCode);
-        echo json_encode($responseData);
+        if ($responseData) {
+            echo json_encode($responseData);
+        }
         exit();
     }
 }

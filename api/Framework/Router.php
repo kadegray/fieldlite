@@ -19,19 +19,21 @@ class Router
         array_shift($firstSegment);
         $firstSegment = array_first($firstSegment);
 
+        if (!$firstSegment) {
+            new Response(null, 404);
+        }
+
         if (Str::plural($firstSegment) === $firstSegment) {
             self::processIndexRoute($firstSegment);
-
-            return;
         }
 
         if (Str::singular($firstSegment) === $firstSegment) {
             foreach (self::$routes as $route) {
                 self::processRoute($firstSegment, $route);
             }
-
-            return;
         }
+
+        new Response(null, 404);
     }
 
     protected static function processRoute($firstSegment, $route)

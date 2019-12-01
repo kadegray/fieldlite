@@ -97,4 +97,5 @@ export class SubscribersComponent {
 
     return _.get(this.stateNames, stateId - 1);
   }
+
 }
