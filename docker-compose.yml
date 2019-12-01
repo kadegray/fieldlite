@@ -16,7 +16,7 @@ services:
       - DB_HOST=database
       - DB_USERNAME=root
       - DB_PASSWORD=root
-      - DB_NAME=subscribersfields
+      - DB_NAME=fieldlite
       - DB_PORT=3306
 
   database:

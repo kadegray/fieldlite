@@ -30,7 +30,7 @@ http://localhost:1000/api
 
 ### container bash
     docker container list
-    docker exec -it fieldlite_api_1 bash
+    docker exec -it fieldlite_api bash
 
 ## database
 
@@ -49,6 +49,7 @@ Create a database with the name fieldlite and import /database_schema.sql
 ### build and serve
     cd frontend
     npm i
+    npm install -g @angular/cli
     ng serve
 
 ### frontend URL
