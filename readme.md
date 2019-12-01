@@ -17,11 +17,11 @@ http://localhost:1000/api
 ## database
 
 ### connection details
-ip: 127.0.0.1
-port: 33061
-username: root
-password: root
-database name: fieldlite
+    ip: 127.0.0.1
+    port: 33061
+    username: root
+    password: root
+    database name: fieldlite
 
 ### import schema
 Create a database with the name fieldlite and import /database_schema.sql
