@@ -28,6 +28,11 @@ class SubscriberRequest extends Request
             data_set($rules, 'email_address', $emailAddressRule . '|email_domain_active|unique:subscribers,email_address');
         }
 
+        if ($this->method === 'put') {
+            $emailAddressRule = data_get($rules, 'email_address');
+            data_set($rules, 'email_address', $emailAddressRule . '|email_domain_active');
+        }
+
         return $rules;
     }
 }

@@ -75,6 +75,6 @@
 
 <div mat-dialog-actions *ngIf="!updatingFormGroup">
   <button mat-button (click)="cancelButtonClick()">Cancel</button>
-  <button mat-button (click)="saveButtonClick()" cdkFocusInitial
+  <button mat-button (click)="saveButtonClick()" color="primary" cdkFocusInitial
     [disabled]="!formGroup.valid">{{data.id ? 'Save' : 'Create'}}</button>
 </div>

@@ -54,7 +54,7 @@ class Request
         }
 
         $errors = $validation->errors();
-        new Response($errors->firstOfAll());
+        new Response($errors->firstOfAll(), 406);
     }
 
     protected function correctPutRequestMethodIssue()
