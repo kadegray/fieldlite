@@ -17,7 +17,7 @@ class Database
         $serverName = getenv('DB_HOST', true) ?? '127.0.0.1';
         $userName = getenv('DB_USERNAME', true) ?? 'root';
         $password = getenv('DB_PASSWORD', true) ?? 'root';
-        $databaseName = getenv('DB_NAME', true) ?? 'subscribersfields';
+        $databaseName = getenv('DB_NAME', true) ?? 'fieldlite';
         $databasePort = getenv('DB_PORT', true) ?? 3306;
 
         $connection = new \mysqli(
