@@ -14,6 +14,8 @@ RUN apt-get update
 COPY default.conf /etc/nginx/conf.d/default.conf
 COPY php.ini /usr/local/etc/php/conf.d/
 
+RUN curl --silent --show-error https://getcomposer.org/installer | php
+
 WORKDIR $APP_HOME
 
 RUN composer install
