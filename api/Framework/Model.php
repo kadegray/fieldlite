@@ -196,11 +196,16 @@ class Model implements JsonSerializable
         $modelInstance = self::getInstance();
         $query = "SELECT * FROM $modelInstance->tableName;";
         $all = Database::query($query);
+        $response = [];
+        if (!$all) {
+            return $response;
+        }
 
         $modelClass = self::getModelClassByModelName($modelInstance->singular);
-        $response = [];
-        foreach ($all as $row) {
-            $response[] = new $modelClass($row);
+        if (is_array($all) && count($all)) {
+            foreach ($all as $row) {
+                $response[] = new $modelClass($row);
+            }
         }
 
         return $response;

@@ -20,7 +20,7 @@ export interface Subscriber {
 })
 export class SubscribersComponent {
 
-  subscribers: Subscriber[];
+  subscribers: Subscriber[] = [];
   newSubscriber: Subscriber = {
     first_name: '',
     last_name: '',
@@ -73,7 +73,10 @@ export class SubscribersComponent {
         .subscribe((subscriber: Subscriber) => {
 
           const subscriberId = _.get(subscriber, 'id');
-          const subscribers: Array<any> = _.clone(this.subscribers);
+          let subscribers: Array<any> = _.clone(this.subscribers);
+          if (!subscribers) {
+            subscribers = [];
+          }
 
           let existingSubscriber = _.find(subscribers, (s) => {
             return s.id === subscriberId;
