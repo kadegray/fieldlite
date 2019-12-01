@@ -1,36 +1,37 @@
 
-### Setup
+# Setup
 
-## backend
+## api
 
-./docker-compose build
-./docker-compose
+### build and compose
+    ./docker-compose build
+    ./docker-compose
 
-# api URL
+### api URL
 http://localhost:1000/api
 
-# container bash
-docker container list
-docker exec -it subscribersfields_api_1 bash
+### container bash
+    docker container list
+    docker exec -it fieldlite_api_1 bash
 
 ## database
 
-# connection details
+### connection details
 ip: 127.0.0.1
 port: 33061
 username: root
 password: root
-database name: subscribersfields
+database name: fieldlite
 
-# import schema
-/database_schema.sql
+### import schema
+Create a database with the name fieldlite and import /database_schema.sql
 
 ## frontend
 
-# build and serve
-cd frontend
-npm i
-ng serve
+### build and serve
+    cd frontend
+    npm i
+    ng serve
 
-# frontend URL
+### frontend URL
 http://localhost:4200/
