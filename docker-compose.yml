@@ -6,8 +6,8 @@ services:
     build:
         context: ./
         dockerfile: Dockerfile
-    volumes:
-      - api_sync:/var/www/html:nocopy
+    # volumes:
+    #   - api_sync:/var/www/html:nocopy
     ports:
       - "1000:80"
     links:
@@ -30,7 +30,7 @@ services:
       - mysql_data:/var/lib/mysql
 
 volumes:
-  api_sync:
-    external: true
+#   api_sync:
+#     external: true
   mysql_data:
     driver: local

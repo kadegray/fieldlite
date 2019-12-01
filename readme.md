@@ -5,25 +5,17 @@
 
 ### build and compose
 
-Docker Sync is used to keep changed files synced with the container. I use it to get around file system performance issues between OSX and the containers. https://docker-sync.readthedocs.io/en/latest/getting-started/installation.html
-
-    gem install docker-sync
-    brew install unison
-
-
-If you have trouble installing unison i recomend installing the app and on opening it installing the commandline app. https://github.com/bcpierce00/unison/releases
-
-
-This will build
+Build
 
     ./docker-compose build
 
 > Note: On OSX you may get this error "mkmf.rb can't find header files". This resolved it for me https://github.com/EugenMayer/docker-sync/issues/679#issuecomment-534074764
 
 
-This command will compose it
+Compose
 
     ./docker-compose
+
 
 ### api URL
 http://localhost:1000/api
